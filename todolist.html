@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My ToDo List</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      background: #fafafa;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: #fdf9f6;
+      border-right: 1px solid #eee;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .profile-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e45735;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+      color: #444;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      color: #e45735;
+    }
+
+    .nav-item span {
+      margin-left: 10px;
+    }
+
+    .projects {
+      margin-top: auto;
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+    }
+
+    .card {
+      background: #fffdfc;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 30px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .card h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .card p {
+      margin-bottom: 20px;
+      color: #666;
+    }
+
+    /* Input */
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .controls input {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .controls input[type="text"] {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .controls input[type="date"],
+    .controls input[type="time"] {
+      width: 140px;
+    }
+
+    .controls button {
+      background: #e45735;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .controls button:hover {
+      background: #c94326;
+    }
+
+    /* Task List */
+    .todo-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .todo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      flex-wrap: wrap;
+    }
+
+    .todo-item span {
+      flex: 1;
+    }
+
+    .todo-meta {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .done {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .btn-small {
+      margin-left: 8px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .btn-done { background: #27ae60; color: white; }
+    .btn-delete { background: crimson; color: white; }
+
+    .btn-clear {
+      margin-top: 20px;
+      background: #e45735;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-clear:hover {
+      background: #c94326;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="profile">
+      <div class="profile-circle" id="profileCircle">?</div>
+      <div id="profileName">User</div>
+    </div>
+
+    <a href="Welcomepage.html" class="nav-item">🔍 <span>Home</span></a>
+    <div class="nav-item">📅 <span>Calendar</span></div>
+    <div class="nav-item">✔️ <span>Tasks</span></div>
+
+    <div class="projects">
+      <strong>My Projects</strong><br>
+      <small>Your projects will appear here.</small>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="card">
+      <h1>Welcome to My ToDo List</h1>
+      <p>Stay organized, focus on what matters, and achieve your goals.</p>
+
+      <div class="controls">
+        <input type="text" id="inputtodo" placeholder="Enter a task..." />
+        <input type="date" id="tododate" />
+        <input type="time" id="todotime" />
+        <button onclick="addTodo()">Add</button>
+      </div>
+
+      <ul class="todo-list" id="todoContainer"></ul>
+
+      <button class="btn-clear" onclick="clearAll()">Clear All</button>
+    </div>
+  </div>
+
+  <script>
+    let todos = JSON.parse(localStorage.getItem("todos")) || [];
+    displayTodos();
+
+    function addTodo() {
+      let input = document.getElementById("inputtodo");
+      let date = document.getElementById("tododate").value;
+      let time = document.getElementById("todotime").value;
+
+      let text = input.value.trim();
+      if (text !== "") {
+        todos.push({ text, date, time, done: false });
+        save();
+        input.value = "";
+        document.getElementById("tododate").value = "";
+        document.getElementById("todotime").value = "";
+        displayTodos();
+      }
+    }
+
+    function toggleDone(index) {
+      todos[index].done = !todos[index].done;
+      save();
+      displayTodos();
+    }
+
+    function deleteTodo(index) {
+      todos.splice(index, 1);
+      save();
+      displayTodos();
+    }
+
+    function clearAll() {
+      todos = [];
+      save();
+      displayTodos();
+    }
+
+    function save() {
+      localStorage.setItem("todos", JSON.stringify(todos));
+    }
+
+    // Load and display user's name from localStorage
+    let storedName = localStorage.getItem("userName");
+    if (storedName) {
+      document.getElementById("profileName").textContent = storedName;
+      document.getElementById("profileCircle").textContent = storedName.charAt(0).toUpperCase();
+    }
+
+    function displayTodos() {
+      let container = document.getElementById("todoContainer");
+      container.innerHTML = "";
+      todos.forEach((todo, i) => {
+        let li = document.createElement("li");
+        li.className = "todo-item";
+        li.innerHTML = `
+          <div>
+            <span class="${todo.done ? 'done' : ''}">${todo.text}</span>
+            <div class="todo-meta">${todo.date ? todo.date : ""} ${todo.time ? todo.time : ""}</div>
+          </div>
+          <div>
+            <button class="btn-small btn-done" onclick="toggleDone(${i})">${todo.done ? "Undo" : "Done"}</button>
+            <button class="btn-small btn-delete" onclick="deleteTodo(${i})">Delete</button>
+          </div>
+        `;
+        container.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
+
+

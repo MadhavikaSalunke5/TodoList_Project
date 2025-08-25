@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choose Option</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background: #f8f9fa;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: #ffffff;
+      border-right: 1px solid #ddd;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar h2 {
+      font-size: 18px;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      margin: 15px 0;
+      color: #555;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .sidebar ul li:hover {
+      color: #007bff;
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .main h1 {
+      font-size: 22px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .main p {
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .cards {
+      display: flex;
+      gap: 20px;
+    }
+
+    .card {
+      flex: 1;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transform: translateY(-3px);
+    }
+
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .cards {
+        flex-direction: column;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2 id="userName">My Workspace</h2>
+    <ul>
+      
+      <li><a href="Welcomepage.html" <span> Home</span></a></li>
+    </ul>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <h1>How are you planning to use our app?</h1>
+    <p>We’ll streamline your setup experience accordingly.</p>
+
+    <div class="cards">
+      <div class="card" onclick="selectOption('myself')">
+        <h2>For myself</h2>
+        <p>Write better. Think more clearly. Stay organized.</p>
+      </div>
+      <div class="card" onclick="selectOption('team')">
+        <h2>With my team</h2>
+        <p>Wikis, docs, tasks & projects, all in one place.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Load name from localStorage
+    let storedName = localStorage.getItem("userName") || "My Workspace";
+    document.getElementById("userName").innerText = storedName;
+
+    function selectOption(choice) {
+      if(choice === "myself") {
+        window.location.href = "todolist.html"; // ✅ Redirect to your ToDo page
+      } else {
+        alert("You selected: With my team!");
+      }
+    }
+  </script>
+</body>
+</html>
