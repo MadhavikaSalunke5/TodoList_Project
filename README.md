@@ -25,6 +25,10 @@ This app allows users to organize tasks, set deadlines, and track completion wit
 - **LocalStorage** – Persistent storage of tasks and user data  
 
 ---
+
+## 📂 Project Structure
+
+
 TodoApp/
 ├── Welcomepage.html # Welcome page with app introduction
 ├── name.html # User name input page
@@ -39,7 +43,4 @@ TodoApp/
 
 
 
-
-
-## 📂 Project Structure
 
